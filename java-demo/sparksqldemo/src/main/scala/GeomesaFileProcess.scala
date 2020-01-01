@@ -1,5 +1,4 @@
 import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.sql.SparkSession
 
 /**
   * @author ming
@@ -15,14 +14,14 @@ object GeomesaFileProcess {
 
     val sc = SparkContext.getOrCreate(sparkConf)
 
-    sc.textFile("file:///D://data")
+    sc.textFile("file:///D://hbase.table")
       .map(x => {
         val params = x.split(" ")
         params
       })
       .filter(x => x.size > 7)
       .map(x => {
-        val path = x(18).replace("/hbase/data/default/", "")
+        val path = x(13).replace("/hbase/data/default/", "")
         val params = path.split("_")
         if (params.length >= 2) {
           (params(0), params(1))
@@ -37,6 +36,8 @@ object GeomesaFileProcess {
         val params = x._1.split(",")
         "%s,%s".format(params(0), params(1))
       })
+      .sortBy(x => x, true)
+      .repartition(1)
       .saveAsTextFile("file:///D://result")
 
     sc.stop()
