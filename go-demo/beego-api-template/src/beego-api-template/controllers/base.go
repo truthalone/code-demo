@@ -3,6 +3,7 @@ package controllers
 import (
 	"beego-api-template/g"
 	"bytes"
+	"fmt"
 	"github.com/astaxie/beego"
 )
 
@@ -17,6 +18,14 @@ const (
 	ErrJson = `{"status":false,"message":"","result":null}`
 	OkJson  = `{"status":true,"message":"","result":`
 )
+
+var (
+	runModel = "" //程序运行模式
+)
+
+func init() {
+	runModel = beego.AppConfig.String("RunMode")
+}
 
 func (b *BaseController) Prepare() {
 	if b.Ctx.Request.Method == "OPTIONS" {
@@ -43,8 +52,8 @@ func (b *BaseController) Finish() {
 	w.Header().Add("Access-Control-Allow-Headers",
 		"Origin, No-Cache, X-Requested-With, Cache-Control, Content-Type,Authorization,token")
 	if b.NotAutoJson {
-		if b.result.Status {
-			str := b.result.Result.(string)
+		if b.result.Result {
+			str := b.result.Data.(string)
 			buf := bytes.Buffer{}
 			buf.Grow(len(str) + 128)
 			buf.WriteString(OkJson)
@@ -71,12 +80,25 @@ func (b *BaseController) Finish() {
 //设置返回错误格式
 func (b *BaseController) SetError(err string) {
 	b.result.Message = err
-	b.result.Status = false
+	b.result.Result = false
 }
 
 //设置成功返回数据格式
 func (b *BaseController) SetData(data interface{}) {
 	b.NotAutoJson = false
-	b.result.Result = data
-	b.result.Status = true
+	b.result.Data = data
+	b.result.Result = true
+}
+
+//设置带有调试信息的错误
+//有些错误信息，如数据库操作错误，不应在正式发布后，返回给前端
+func (b *BaseController) SetErrorWithDebug(err string, debugInfo string) {
+	errInfo := err
+	if runModel == "dev" {
+		errInfo = fmt.Sprintf("err:%s  debug:%s", err, debugInfo)
+	}
+
+	b.result.DebugInfo = debugInfo
+	b.result.Message = errInfo
+	b.result.Result = false
 }

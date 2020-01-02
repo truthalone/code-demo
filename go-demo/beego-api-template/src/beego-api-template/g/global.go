@@ -10,9 +10,10 @@ import (
 )
 
 type JsonRet struct {
-	Status  bool        `json:"status"`
-	Message string      `json:"message"`
-	Result  interface{} `json:"result"`
+	Result    bool        `json:"result"`
+	Message   string      `json:"message"`
+	Data      interface{} `json:"data"`
+	DebugInfo string      `json:"-"`
 }
 
 const (
