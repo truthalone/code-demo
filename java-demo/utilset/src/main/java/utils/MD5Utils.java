@@ -1,10 +1,12 @@
-package com.xskj.manage.datamiddle.common.utils;
+package utils;
 
-import org.springframework.util.StringUtils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * MD5加密工具
+ */
 public class MD5Utils {
 
     /**
@@ -32,7 +34,7 @@ public class MD5Utils {
      * @return string
      */
     public static String generate(String input, String salt) {
-        if (StringUtils.isEmpty(salt)) {
+        if (salt == null) {
             salt = "";
         }
 
@@ -66,7 +68,8 @@ public class MD5Utils {
 
 
     public static void main(String[] args) {
-        System.out.println(generate(""));
+        System.out.println(generate("ming"));
+        System.out.println(generate("ming","ming"));
     }
 
 }

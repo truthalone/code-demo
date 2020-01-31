@@ -1,4 +1,4 @@
-package com.xskj.manage.datamiddle.common.utils;
+package utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

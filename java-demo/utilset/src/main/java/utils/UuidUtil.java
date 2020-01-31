@@ -1,4 +1,4 @@
-package com.xskj.manage.dataexchange.common.utils;
+package utils;
 
 import java.util.UUID;
 
@@ -8,5 +8,9 @@ import java.util.UUID;
 public class UuidUtil {
     public static String generate() {
         return UUID.randomUUID().toString().replace("-", "");
+    }
+
+    public static void main(String[] args) {
+        System.out.println(generate());
     }
 }
