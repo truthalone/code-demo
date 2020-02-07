@@ -313,8 +313,8 @@ public class HbaseDao2 {
         //插入数据
 //        hbaseDao2.insert();
 
-        //插入多条数据
-//       hbaseDao2.insertMulti(1000);
+//        插入多条数据
+       hbaseDao2.insertMulti(100000);
 
 //        hbaseDao2.queryByRowKey();
 
